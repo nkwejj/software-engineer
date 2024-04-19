@@ -1,0 +1,83 @@
+/*login**********************************************************************************/
+#backcont{
+    background-image: url(../assets/follow_me.png);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /*-webkit-background-size:cover;
+    -moz-background-size:cover;*/
+    min-height: 100vh;
+}
+
+.meituan-content{
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.login-cont{
+    width: 500px;
+    height: 400px;
+    background: #ffffff;
+    opacity: 80%;
+    border-radius: 5px;
+}
+
+.meituan-title{
+    text-align: center;
+    color: #000000;
+    font-size: 30px;
+    padding-top: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.meituan-user{
+    width: 400px;
+    margin: 0 auto;
+    padding-top: 30px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.meituan-user p{
+    width: 50px;
+    color: #000000;
+    font-size: 16px;
+}
+
+.inptflex{
+    flex: 1;
+}
+
+.reg-view{
+    width: 400px;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 auto;
+    padding-top: 10px;
+}
+
+.reg-view p{
+    cursor: pointer;
+    display: contents;
+}
+
+.meituan-btn{
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px auto 0 auto;
+    font-size: 16px;
+}
+
+
+.register-cont{
+    width: 500px;
+    height: 500px;
+    background: #ffffff;
+    opacity: 80%;
+    border-radius: 5px;
+}
