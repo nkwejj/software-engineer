@@ -14,14 +14,14 @@
                             <td><el-input type="text" placeholder="请输入账号" v-model="ruleForm.userName" style="width: 300px;"></el-input></td>
                         </el-form-item>
 
-                        <el-form-item class="meituan-user" prop="password">
+                        <el-form-item class="meituan-user" prop="password1">
                             <td><p>密码:</p></td>
-                            <td><el-input type="password" placeholder="请输入密码" v-model="ruleForm.password" style="width: 300px;" shpw-password></el-input></td>
+                            <td><el-input type="password" placeholder="请输入密码" v-model="ruleForm.password1" style="width: 300px;" shpw-password></el-input></td>
                         </el-form-item>
 
-                        <el-form-item class="meituan-user" prop="password">
+                        <el-form-item class="meituan-user" prop="password2">
                             <td><p>密码:</p></td>
-                            <td><el-input type="password" placeholder="请确认密码" v-model="ruleForm.password" style="width: 300px;" shpw-password></el-input></td>
+                            <td><el-input type="password" placeholder="请确认密码" v-model="ruleForm.password2" style="width: 300px;" shpw-password></el-input></td>
                         </el-form-item>
 
                         <el-form-item class="yanzheng" prop="code">
@@ -47,6 +47,10 @@
     import router from '../router/router'
     import SIdentify from '../components/SIdentify.vue'
 
+    import {
+        registerPost
+    } from '../api/login.js'
+
     export default{
         components: {
             SIdentify: SIdentify,
@@ -54,7 +58,8 @@
         setup(){
             const ruleForm = reactive({
                     userName: '',
-                    password: '',
+                    password1: '',
+                    password2: '',
                     code: '',
                     load:'false'
                 })
@@ -66,11 +71,15 @@
             const rules = reactive({
                 userName: [
                             { required: true, message: '请输入账号', trigger: 'blur' },
-                            { min: 5, max: 10, message: '账号长度 在 5 到 10长度之间', trigger: 'blur' },
+                            { min: 6, max: 12, message: '账号长度 在 6 到 12长度之间', trigger: 'blur' },
                         ],
-                password: [
+                password1: [
                             { required: true, message: '请输入密码', trigger: 'blur' },
-                            { min: 6, max: 10, message: '密码长度 在 6到 10长度之间', trigger: 'blur' },
+                            { min: 6, max: 12, message: '密码长度 在 6 到 12长度之间', trigger: 'blur' },
+                        ],
+                password2: [
+                            { required: true, message: '请确认密码', trigger: 'blur' },
+                            { min: 6, max: 12, message: '密码长度 在 6 到 12长度之间', trigger: 'blur' },
                         ],
                 code: [
                             { required: true, message: '请输入验证码', trigger: 'blur' },
@@ -78,9 +87,37 @@
                     ],
             })
             
-            const register=()=>{
+            const register = async ()=>{
                 ruleForm.load=true
+                const registerdata={
+                    account:'',
+                    password:''
+                }
+                registerdata.account=ruleForm.userName
+                registerdata.password=ruleForm.password1
                 
+
+                if(ruleForm.password1 != ruleForm.password2){
+                    ElMessage('两次密码输入不一致.')
+                }
+
+
+                 //验证码正确
+                 else if(identifyCode.value==ruleForm.code){
+
+                    const res = await registerPost(registerdata)
+
+                    ElMessage('帐号注册成功.')
+
+                    console.log(res)
+                }
+                //验证码错误
+                else{
+                    ruleForm.code=''
+                    ruleForm.load=false
+                    ElMessage('验证码错误.')
+                    refreshCode()
+                }
             }
 
             const back2login=()=>{

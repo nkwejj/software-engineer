@@ -43,6 +43,10 @@
     // import {postlogin} from '../utils/index'                                        //可以删除
     import SIdentify from '../components/SIdentify.vue'
 
+    import {
+        loginPost
+    } from '../api/login.js'
+
     export default{
         components: {
             SIdentify: SIdentify,
@@ -62,11 +66,11 @@
             const rules = reactive({
                 userName: [
                             { required: true, message: '请输入账号', trigger: 'blur' },
-                            { min: 5, max: 10, message: '账号长度 在 5 到 10长度之间', trigger: 'blur' },
+                            { min: 6, max: 12, message: '账号长度 在 6 到 12 长度之间', trigger: 'blur' },
                         ],
                 password: [
                             { required: true, message: '请输入密码', trigger: 'blur' },
-                            { min: 6, max: 10, message: '密码长度 在 6到 10长度之间', trigger: 'blur' },
+                            { min: 6, max: 12, message: '密码长度 在 6 到 12 长度之间', trigger: 'blur' },
                         ],
                 code: [
                             { required: true, message: '请输入验证码', trigger: 'blur' },
@@ -74,64 +78,61 @@
                     ],
             })
             
-            const login=()=>{
+            const login= async ()=>{
                 ruleForm.load=true
                 const logindata={
-                    username:'',
+                    account:'',
                     password:''
                 }
-                logindata.username=ruleForm.userName
+                logindata.account=ruleForm.userName
                 logindata.password=ruleForm.password
 
                 //验证码正确
                 if(identifyCode.value==ruleForm.code){
 
-                    router.push('/S1')
+                    // router.push('/S1')
 
-                    // // 将菜单栏的选中项ID存储到本地存储中，ID为1。
+                    // 将菜单栏的选中项ID存储到本地存储中，ID为1。
                     // localStorage.setItem('menuid',JSON.stringify('1'))
 
                     // // 将Token信息存储到会话存储中，表示登录成功。
                     // sessionStorage.setItem('Token',"success")
 
-
                     //此行向上删除，解封下方代码
-              
-                    // postlogin(logindata).then(res=>{
-                    //     //账号密码存在
-                    //     if(res=="success"||res=="fake"){
-                    //         //存储token和username
-                    //         sessionStorage.setItem('Token',res)
-                    //         sessionStorage.setItem('username',logindata.username)
+                    
+                    const res = await loginPost(logindata)
 
-                    //         ruleForm.load=false
-                    //         router.push('/S1')
+                    // console.log(res.data.status)
 
-                    //         //登录菜单栏主页选项高亮
-                    //         localStorage.setItem('menuid',JSON.stringify('1'))
-                    //     }
-                    //     //账号密码不存在
-                    //     else{
-                    //         ruleForm.password=''
-                    //         ruleForm.code=''
-                    //         ruleForm.load=false
-                    //         refreshCode()
-                    //         if(res=="fail"){  
-                    //             ElMessage('账号或密码错误.')
-                    //         }
-                    //         else{
-                    //             console.log(res)
-                    //             let faildata=res.split("_")
+                    if(res.data.status == 0){
+                        //存储token和account
+                        sessionStorage.setItem('Token',res)
+                        sessionStorage.setItem('account',logindata.account)
+
+                        ruleForm.load=false
+                        router.push('/S1')
+
+                        //登录菜单栏主页选项高亮
+                        localStorage.setItem('menuid',JSON.stringify('1'))
+                    }
+                    //账号密码不存在
+                    else{
+                        ruleForm.password=''
+                        ruleForm.code=''
+                        ruleForm.load=false
+                        refreshCode()
+                        if(res.data.status == 1){  
+                            ElMessage('账号或密码错误.')
+                        }
+                        // else{
+                        //     console.log(res)
+                        //     let faildata=res.split("_")
                                 
-                    //             ElMessage(`您已连续尝试${faildata[2]}次均出现账号或密码错误，
-                    //             目前您的账户处于锁定状态，账号锁定期间登录服务不予受理，
-                    //             请于${faildata[3]}之后再次尝试`)
-                    //         }
-                    //     }
-                    // },error=>{
-                    //     console.log(error)
-                    // })
-                    //下方封印
+                        //     ElMessage(`您已连续尝试${faildata[2]}次均出现账号或密码错误，
+                        //     目前您的账户处于锁定状态，账号锁定期间登录服务不予受理，
+                        //     请于${faildata[3]}之后再次尝试`)
+                        // }
+                    }
 
                 }
                 //验证码错误
