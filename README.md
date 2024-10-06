@@ -26,3 +26,12 @@ node app
 cd server
 nodemon app
 ```
+
+### 其他
+#### vue项目的初始化
+
+```cmd
+npm init vue@latest
+```
+
+

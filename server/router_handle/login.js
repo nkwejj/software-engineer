@@ -1,7 +1,7 @@
 // 导入数据库
 const db = require('../db/index.js')
-// 导入加密中间件
-const bcrypt = require('bcrypt')
+// 导入加密中间件(用 bcryptjs 代替 bcrypt)
+const bcrypt = require('bcryptjs')
 // 导入jwt，用于生成token
 const jwt = require('jsonwebtoken')
 // 导入jwt配置文件，用于加密和解密
